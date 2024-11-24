@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>はあも</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .container {
+            display: none;
+            max-width: 600px;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .container.active {
+            display: block;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        /* 時計のスタイル */
+        #clock {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 24px; /* フォントサイズを大きく */
+            color: #00FF00; /* 緑色に変更 */
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 時計 -->
+    <div id="clock"></div>
+
+    <!-- 最初のページ -->
+    <div id="page1" class="container active">
+        <h1>最初のページ</h1>
+        <p>ようこそ</p>
+        <button onclick="goToPage(2)">次のページへ</button>
+    </div>
+
+    <!-- YouTube動画再生ページ -->
+    <div id="page2" class="container">
+        <h1>YouTube動画再生</h1>
+        <input type="text" id="urlInput" placeholder="YouTubeのURLを入力してください">
+        <button onclick="loadVideo()">動画を見る</button>
+        <div id="videoDisplay"></div>
+        <button onclick="goToPage(3)">次のページへ</button>
+    </div>
+
+    <!-- SNSリンクページ -->
+    <div id="page3" class="container">
+        <h1>SNSリンク</h1>
+        <div class="button-container">
+            <button onclick="window.location.href='https://x.com/haamodayo?t=BGPpasXZLKKla1CQvbgHmQ&s=09';">Twitter</button>
+            <button onclick="window.location.href='https://discord.gg/R2aTZ8cAjZ';">discordサーバー</button>
+            <button onclick="window.location.href='https://youtube.com/@haamo?si=bDJgxzj8edAmw8C-';">YouTube</button>
+            <button onclick="window.location.href='https://d.kuku.lu/fp3ha6xku';">GameGuardian</button>
+            <button onclick="window.location.href='https://qr.paypay.ne.jp/p2p01_Cq7go0KpcrNzOq5o';">PayPay</button>
+            <button onclick="alert'https://d.kuku.lu/fz7eepccy'；">ファイルダウンロード</button>
+        </div>
+        <button onclick="goToPage(4)">次のページへ</button>
+    </div>
+
+    <!-- Spotifyプレイリストページ -->
+    <div id="page4" class="container">
+        <h1>Spotifyプレイリスト</h1>
+        <div style="display: flex; justify-content: space-around;">
+            <!-- プレイリスト1 -->
+            <iframe src="https://open.spotify.com/embed/playlist/1ojDKkcGmitotkpAu6nDLY?si=xi79NrASSQO3gZBwNrUuWg&utm_source=copy-link" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+
+            <!-- プレイリスト2 -->
+            <iframe src="https://open.spotify.com/embed/playlist/48PWVIOx9hNAjrmjW1iQIm?si=Ui-QnsJBQG2Be9vRuFouQg&utm_source=copy-link" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+        </div>
+        <button onclick="goToPage(1)">最初のページに戻る</button>
+    </div>
+
+    <script>
+        function goToPage(pageNumber) {
+            // すべてのページを非表示
+            document.querySelectorAll('.container').forEach(page => {
+                page.classList.remove('active');
+            });
+            // 指定したページを表示
+            document.getElementById(`page${pageNumber}`).classList.add('active');
+        }
+
+        function extractVideoId(url) {
+            const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:live\/|embed\/|watch\?v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+            const match = url.match(regex);
+            return match ? match[1] : null;
+        }
+
+        function loadVideo() {
+            const url = document.getElementById('urlInput').value;
+            const videoId = extractVideoId(url);
+
+            if (videoId) {
+                const videoContainer = document.createElement('div');
+                videoContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+
+                const videoDisplay = document.getElementById('videoDisplay');
+                videoDisplay.innerHTML = '';
+                videoDisplay.appendChild(videoContainer);
+            } else {
+                alert('有効なYouTubeのURLを入力してください。');
+            }
+        }
+
+        // 時計を更新する関数
+        function updateClock() {
+            const clock = document.getElementById('clock');
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            clock.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        // 1秒ごとに時計を更新
+        setInterval(updateClock, 1000);
+        updateClock(); // 初回表示
+    </script>
+
+</body>
+</html>
